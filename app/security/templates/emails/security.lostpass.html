@@ -1,0 +1,16 @@
+{% extends 'emails/prop._layout.html' %}
+
+{% block body %}
+Hello, {{ user }}!<br />
+<br />
+Uh-oh, did you forget your password? It's okay! Happens to the best of us.<br />
+<br />
+Use this link to reset it:<br />
+<a href="{{ recoveryurl }}">{{ recoveryurl }}</a><br />
+(If the above link does not work try copying and pasting it into your browser.)<br />
+<br />
+This link expires in 48 hours and may only be used once. To reset your password again, use the forgot password link again.<br />
+<br />
+Thanks,
+{{ brand.get_theme('title') }}
+{% endblock %}

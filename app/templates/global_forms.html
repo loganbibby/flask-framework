@@ -1,0 +1,77 @@
+{%- macro _display_field(field, placeholder_text='', show_prefix=True) -%}
+{%- if field.type == 'DecimalField' and show_prefix -%}<span class="field-prefix"><i class="fa fa-usd"></i></span>{%- endif -%}
+{%- if field.type == 'DateField' and show_prefix -%}<span class="field-prefix"><i class="fa fa-calendar"></i></span>{%- endif -%}
+{%- if field.id == 'person' and show_prefix -%}<span class="field-prefix"><i class="fa fa-address-book-o"></i></span>{%- endif -%}
+{%- if field.id == 'listing' and show_prefix -%}<span class="field-prefix"><i class="fa fa-map-marker"></i></span>{%- endif -%}
+{%- if field.id == 'email' and show_prefix -%}<span class="field-prefix"><i class="fa fa-envelope-o"></i></span>{%- endif -%}
+{{ field(placeholder=placeholder_text, **kwargs) }}
+{%- endmacro -%}
+
+{%- macro display_field(field, field_side='r', label=True, container_class='', placeholder_text='', errors=True, field_class='') -%}
+  <div class="field-{{ field.id }} fieldtype-{{ field.type | lower }} field-container{% if field.errors %} field-errors{% endif %} {{ container_class }}">
+      {%- if field_side == 'l' -%}{{ _display_field(field, placeholder_text, **kwargs) }}{%- endif -%}
+      {%- if label and not field.flags.hidden -%}<div class="field-label">{{ field.label }}{%- if field.flags.required -%}<span class="required">*</span>{%- endif -%}{%- if field.description -%} <span class="help" title="{{ field.description }}"><i class="fa fa-question-circle-o"></i></span>{%- endif -%}</div>{%- endif -%}
+      {%- if errors -%}{{ display_field_errors(field.id, field.errors) }}{%- endif -%}
+      {%- if field_side == 'r' -%}{{ _display_field(field, placeholder_text, **kwargs) }}{%- endif -%}
+  </div><!-- field-{{ field.id }} -->
+{%- endmacro -%}
+
+{% macro display_field_errors(field_name, field_errors) %}
+  {%- if field_errors -%}
+  <ul class="field-errors field-errors-{{ field_name }}">
+    {%- for error in field_errors -%}
+    <li>{{ error }}</li>
+    {%- endfor -%}
+  </ul>
+  {%- endif -%}
+{% endmacro %}
+
+{% macro display_form_errors(form) %}
+  {%- if form.errors -%}
+  <div class="container-full form-errors row">
+    Please fix the following errors:
+    <ul>
+    {% for field_name, field_errors in form.errors | dictsort if field_errors %}
+    {% for error in field_errors %}
+      <li>{{ form[field_name].label }}: {{ error }}</li>
+    {% endfor %}
+    {% endfor %}
+  </div>
+  {%- endif -%}
+{% endmacro %}
+
+{% macro display_checkbox(field) %}
+  {{ display_field(field, field_side='l', **kwargs) }}
+{% endmacro %}
+
+{% macro display_button(field) %}
+  {{ display_field(field, label=False) }}
+{% endmacro %}
+
+{% macro display_field_2col(field) %}
+  <div class="container-full row clear field-{{ field.id }}{% for kwarg in kwargs %} {{ kwarg }}{% endfor %}">
+    <div class="col-5 label">
+      {{ field.label }}{%- if field.flags.required -%}<span class="required">*</span>{%- endif -%}
+      {{ display_field_errors(field.label, field.errors) }}
+    </div>
+    <div class="col-7">
+      {{ field }}
+    </div>
+  </div><!-- field-{{ field.id }}-->
+{% endmacro %}
+
+{% macro display_form(form, action, method='POST') %}
+<form action="{{ action }}" method="{{ method }}">
+  {%- for field in form -%}
+  {{ field }}
+  {%- endfor -%}
+</form>
+{% endmacro %}
+
+{% macro hidden(form) %}
+  {% for field in form %}
+  {% if field.flags.hidden %}
+  {{ field }}
+  {% endif %}
+  {% endfor %}
+{% endmacro %}

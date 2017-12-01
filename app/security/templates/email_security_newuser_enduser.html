@@ -1,0 +1,10 @@
+{% extends 'email_public__layout.html' %}
+
+{% block body %}
+<p>Hello, {{ user }},</p>
+<p>Welcome to {{ brand.get_theme('title') }}! Your new account has been registered.</p>
+<p>{% if brand.get_setting('enduser_confirmemail', True) %}<a href="{{ brand.url }}/confirm/{{ user.get_setting('confirmation') }}">Confirm your e-mail</a> so you can login{% else %}<a href="{{ brand.url }}/portal">Login now</a>{% endif %} to like homes, contact me, and so much more!</p>
+<p>Talk to you soon,<br />
+{{ brand.get_theme('agent_name') }}<br />
+{{ brand.get_theme('title') }}</p>
+{% endblock %}

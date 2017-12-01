@@ -1,0 +1,49 @@
+{% import 'global_macros.html' as m %}
+{% import 'global_forms.html' as m_form %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{% block page_title %}{% endblock %}{{ config.get('SITE_TITLE', 'My Site') }}</title>
+
+  <meta name="description" content="">
+  <meta name="theme-color" content="#f7c824">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.png') }}">
+  <link rel="apple-touch-icon" sizes="57x57" href="{{ url_for('static', filename='public/img/apple-touch-icon.png') }}">
+  <link rel="apple-touch-icon" sizes="72x72" href="{{ url_for('static', filename='public/img/apple-touch-icon-72x72.png') }}">
+  <link rel="apple-touch-icon" sizes="114x114" href="{{ url_for('static', filename='public/img/apple-touch-icon-114x114.png') }}">
+  <link href="https://fonts.googleapis.com/css?family=" rel="stylesheet">
+  <link rel="stylesheet" href="{% block main_stylesheet %}{{ url_for('static', filename='security.css') }}{% endblock %}">
+
+</head>
+<body>
+
+  <main class="container">
+
+    <div class="top">
+      <h1>{{ config.get('SITE_TITLE', 'My Site') }}</h1>
+    </div>
+
+    <nav>
+      <ul>
+        <li{% if request.endpoint == 'security.login' %} class="selected"{% endif %}><a href="{{ url_for('security.login') }}">Log in</a></li>
+        <li{% if request.endpoint == 'security.register' %} class="selected"{% endif %}><a href="{{ url_for('security.register') }}">Register account</a></li>
+      </ul>
+    </nav>
+
+    {% block body %}{% endblock %}
+
+  </main>
+
+  <div class="copyright">
+    &copy; {{ now | format_date('%Y') }} by <a href="/">{{ config.get('SITE_TITLE', 'My Site') }}</a>.<br />
+  </div>
+
+  <script src="https://use.fontawesome.com/65b8073f1c.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  {{ m.toastr() }}
+  {% block javascript %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,89 @@
+{% extends 'security._layout.html' %}
+
+{% block page_title %}{{ m.add_to_title('Register an account', super()) }}{% endblock %}
+
+{% block body %}
+<div class="register content">
+  <form action="{{ url_for('security.register') }}" method="post" class="stdstyle" id="login">
+    {% if form.errors %}
+    <div class="container-full row no-padding clear errors">
+      <ul>
+      {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+        {% for error in field_errors %}
+          <li>{{ form[field_name].label }}: {{ error }}</li>
+        {% endfor %}
+      {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <div class="container-full row clear no-padding names">
+      <div class="col-6 no-padding">
+        {{ form.firstname(placeholder='First name') }}
+      </div>
+      <div class="col-6 no-padding">
+        {{ form.lastname(placeholder='Last name') }}
+      </div>
+    </div>
+    <div class="container-full row clear no-padding">
+      {{ form.email(placeholder='E-mail address') }}
+    </div>
+    <div class="container-full row clear no-padding">
+      <div class="password-errors" style="color: red;"></div>
+      {{ form.password(placeholder='Password') }}
+      <div class="pwstrength_viewport_progress"></div>
+    </div>
+    <div class="container-full no-padding row clear">
+      <div class="col-6 text-left submit no-padding">
+        {{ form.submit }}
+      </div>
+      <div class="col-6 text-right terms no-padding">
+        I accept the <a href="#">Terms of Use</a>.
+      </div>
+    </div>
+    {{ m_form.hidden(form) }}
+  </form>
+</div>
+<!--
+<div class="social">
+  <ul>
+    <li class="text">Or register with:</li>
+    <li class="twitter"><a href="{{ twitter_url }}"><i class="fa fa-twitter"></i></a></li>
+    <li class="facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
+    <li class="google"><a href="#"><i class="fa fa-google"></i></a></li>
+  </ul>
+</div>
+-->
+{% endblock %}
+
+{% block javascript %}
+  {{ super() }}
+  {{ gm.import_javascript( url_for('static', filename='js/vendor/pwstrength/pwstrength-bootstrap.min.js') ) }}
+  <script>
+  $('#password')
+    .pwstrength({
+      ui: {
+        showVerdictsInsideProgressBar: true,
+        viewports: {
+            progress: ".pwstrength_viewport_progress"
+        }
+      }
+    });
+  $('#login').submit(function(){
+    var password = $('#password').val();
+    var error_div = $('.password-errors');
+    console.log('Password length: ' + password.length);
+    console.log('Contains letters? ' + /[A-Za-z]/.test(password));
+    console.log('Contains numbers? ' + /\d/.test(password));
+    console.log('Contains a symbol? ' + /\W/.test(password));
+    if (password.length < 6 || // length test
+        //!/^[A-Za-z0-9\d=!\-@._*]*$/.test(password) || // consists of proper characters
+        !/[A-Za-z]/.test(password) || // letter
+        !/\d/.test(password) || // digits
+        !/\W/.test(password)) { // non-word
+        error_div.text('Must be at least 6 characters with a letter, a number, and a symbol.');
+        event.preventDefault();
+    }
+  })
+  </script>
+{% endblock %}

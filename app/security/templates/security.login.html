@@ -1,0 +1,35 @@
+{% extends 'security._layout.html' %}
+
+{% block page_title %}{{ m.add_to_title('Login', super()) }}{% endblock %}
+
+{% block body %}
+<div class="login content">
+  <form action="{{ url_for('security.login') }}" method="post" class="stdstyle">
+    <div class="container-full row clear no-padding">
+      {{ form.username(placeholder='E-mail address') }}
+    </div>
+    <div class="container-full row clear no-padding">
+      {{ form.password(placeholder='Password') }}
+    </div>
+    <div class="container-full no-padding row clear">
+      <div class="col-6 text-left submit no-padding">
+        {{ form.submit }}
+      </div>
+      <div class="col-6 text-right forgotpassword no-padding">
+        <a href="{{ url_for('.lostpass') }}">Forgot your password?</a>
+      </div>
+    </div>
+    {{ m_form.hidden(form) }}
+  </form>
+</div>
+<!--
+<div class="social">
+  <ul>
+    <li class="text">Or login with:</li>
+    <li class="twitter"><a href="{{ twitter_url }}"><i class="fa fa-twitter"></i></a></li>
+    <li class="facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
+    <li class="google"><a href="#"><i class="fa fa-google"></i></a></li>
+  </ul>
+</div>
+-->
+{% endblock %}

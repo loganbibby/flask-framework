@@ -1,0 +1,72 @@
+{%- macro import_stylesheet(url) -%}
+<link href="{{ url }}" rel="stylesheet">
+{%- endmacro -%}
+
+{%- macro import_javascript(url) -%}
+<script src="{{ url }}"></script>
+{%- endmacro -%}
+
+{%- macro fotorama() %}
+{{ import_stylesheet('https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css') }}
+{{ import_javascript('https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js') }}
+{% endmacro -%}
+
+{%- macro jquery_ui() %}
+{{ import_stylesheet("https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css") }}
+{{ import_javascript("https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js") }}
+{% endmacro -%}
+
+{%- macro jquery() %}
+{{ import_javascript('https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js') }}<!-- jQuery -->
+{% endmacro -%}
+
+{%- macro fontawesome() %}
+{{ import_javascript('https://use.fontawesome.com/65b8073f1c.js') }}<!-- FontAwesome -->
+{% endmacro -%}
+
+{%- macro chartjs() %}
+{{ import_javascript('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.min.js') }}<!-- chartJS-->
+{% endmacro -%}
+
+{%- macro jsgrid() %}
+<!-- js-grid -->
+{{ import_stylesheet("https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css") }}
+{{ import_stylesheet("https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css") }}
+{{ import_javascript("https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js") }}
+<!-- js-grid end -->
+{% endmacro -%}
+
+{%- macro jquery_color() %}
+{{ import_javascript( 'https://code.jquery.com/color/jquery.color-2.1.2.min.js' ) }}<!-- jquery Color -->
+{% endmacro -%}
+
+{%- macro toastr() %}
+{{ import_javascript( 'https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js' ) }}
+{{ import_stylesheet( 'https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css' ) }}
+<script>
+  toastr.options.timeOut = 3000;
+  toastr.options.extendedTimeOut = 6000;
+  toastr.options.progressBar = true;
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+  toastr.{% if category == 'message' %}info{% else %}{{ category }}{% endif %}("{{ message }}");
+{% endfor %}
+{% endif %}
+{% endwith %}
+</script>
+<style>
+#toast-container {
+  min-width: 30%
+}
+#toast-container > div {
+  width: 100%;
+}
+</style>
+{% endmacro -%}
+
+{%- macro metatag(prefix, key, value) -%}
+<meta property='{{ prefix }}:{{ key }}' content="{{ value }}" />
+{%- endmacro -%}
+
+{%- macro add_to_title(addition, super) -%}{{ addition }} - {{ super }}{%- endmacro -%}

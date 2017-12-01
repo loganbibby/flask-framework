@@ -1,0 +1,21 @@
+{% import 'global_macros.html' as m %}
+<!doctype html>
+<html>
+<head>
+	<title>{% block title %}{{ errorname }} - Error {{ errorcode }} - {{ config.get('SITE_NAME', 'This Site') }}{% endblock %}</title>
+	<meta name="description" content="{% block meta_description %}An error occurred while generating this page.{% endblock %}" />
+	<link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.png') }}">
+  {{ m.import_stylesheet( url_for('static', filename='single.css') ) }}
+</head>
+
+<body>
+	<div class="page">
+    {% block body %}
+		<h1>{{ errorname }}</h1>
+		<p class="description">{{ errordescription }}</p>
+		{% endblock %}
+		<p class="logo"><a href="/" title="{{ config.get('SITE_NAME', 'This Site') }}"><img src="{{ url_for('static', filename='img/logo.png') }}" style="height: 40px" /></a></p>
+	</div>
+
+</body>
+</html>

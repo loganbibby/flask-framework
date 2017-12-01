@@ -1,0 +1,19 @@
+{% extends 'security._layout.html' %}
+
+{% block page_title %}{{ m.add_to_title('Lost Password', super()) }}{% endblock %}
+
+{% block body %}
+<div class="lostpass content">
+  <form action="{{ url_for('security.lostpass') }}" method="post" class="stdstyle">
+    <div class="container-full row clear no-padding">
+      {{ m_form.display_field( form.username, placeholder_text='E-mail address' ) }}
+    </div>
+    <div class="container-full no-padding row clear">
+      <div class="col-12 text-center submit no-padding">
+        {{ form.submit }}
+      </div>
+    </div>
+    {{ m_form.hidden(form) }}
+  </form>
+</div>
+{% endblock %}
